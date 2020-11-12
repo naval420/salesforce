@@ -1,0 +1,45 @@
+<template>
+    <template if:true ={showbutton}>
+        <div class="linkTile slds-button slds-button_neutral" >
+                
+            <div onclick= {Hidebutton}>
+                <h2 class="slds-text-heading_large" style="padding-bottom:15px; padding-top:15px;">Create</h2>
+                <span class="slds-icon__container slds-icon-action-new">
+                    <lightning-icon icon-name="action:new" alternative-text="Approved" title="Approved"></lightning-icon>
+                
+                </span>
+                <h3 class="slds-text-heading_medium" style="padding-top:15px;">A New Rollup</h3>
+            </div>
+          
+        </div>
+    </template>
+    
+    <template if:true={showobject}>
+        <div >
+
+            <lightning-datatable data={objects}  columns={columns} key-field="name" hide-checkbox-column="true"  onrowaction={handlerowaction}>
+
+            </lightning-datatable>
+        </div>
+    </template>
+    <template if:true={showobjfields}>
+        <lightning-card title="Select fields">
+        <lightning-datatable data={fields}  columns={columnss} key-field="name" 
+                hide-checkbox-column="true" onrowaction={handlerowaction1}>
+            </lightning-datatable>
+        </lightning-card>
+    </template>
+    <template if:true={showchild}>
+        <lightning-card title="Select Child Object">
+          <p class="slds-p-horizontal_small">
+            <lightning-datatable data={childs}  columns={columnsss} key-field="name" onrowaction={handlerowaction2}
+            hide-checkbox-column="true">
+        </lightning-datatable>
+            </p>
+            <p slot="footer">Card Footer</p>
+        </lightning-card>
+    </template>
+   
+
+        
+</template>
