@@ -39,7 +39,45 @@
             <p slot="footer">Card Footer</p>
         </lightning-card>
     </template>
-   
+    <template if:true={selectionpage}>      
 
+        <lightning-card title="Select child field">
+            <div class="slds-box">
+               You  Select {selectedfield} field from {selectedobject} parent object
+            </div>
+            <div class="slds-grid slds-grid--pull-padded">
+                <div class="slds-col--padded">
+                    <div if:true={childfield}>
+                        <form>
+                            <div class="slds-text-title">Select child field</div>
+                            <select id="theList" size="8" onchange={thelistSelection}>
+                                <template for:each={childfields} for:item="field">
+                                    <option data-key={field.label} key={field.label} value={field.relationship}>
+                                        {field.name}</option>
+                                </template>
+                            </select>   
+                        </form>
+                    </div>
+                </div>
+                <div if:true={newslect} class="slds-grid slds-grid--pull-padded">
+                <div class="slds-text-title">Selected field</div>
+                <select id="theList2" size="8" >
+                    <template for:each={selectedchildField} for:item="item" if:true={newslect}>
+                        <option data-key={item.key} key={item.key} value={item.value}>
+                            {item.value}</option>
+                    </template>
+                </select> 
+
+                </div>
+                <div class="slds-col--padded">
+                    <p class="slds-p-horizontal_small">
+                        <lightning-radio-group name="radioGroup" label="Child Options" options={options}
+                            value={value} onchange={handleChange2} required type="radio">
+                        </lightning-radio-group>
+                    </p>
+                </div>
+                </div>
+            </lightning-card>
+            </template> 
         
 </template>

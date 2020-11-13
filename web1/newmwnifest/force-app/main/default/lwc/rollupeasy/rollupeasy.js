@@ -10,10 +10,13 @@ export default class Rollupeasy extends LightningElement {
     @track childs=[];
     selectedobject='';
     selectedfield='';
-    selectedchildobject=''
-    
+    selectedchildobject='';
+    childfields=[];
+    selectionpage=false;
+    childfield=false;
    // @track  tablesdata =[];
-    
+  @track selectedchildField=[];
+   newslect=false;
     showbutton = true;
     showobject =false;
     showobjfields=false;
@@ -37,6 +40,17 @@ export default class Rollupeasy extends LightningElement {
         {label: 'childFieldApi', fieldName: 'childFieldToken', type: 'text'},
         {label: 'RelationshipName', fieldName: 'RelationshipName', type: 'text'},
      ];
+
+     get options() {
+        
+        return [
+            { label: 'count', value: 'count' },
+            { label: 'Maximum', value: 'Maximum' },
+            { label: 'Minimum', value: 'minimum' },
+            { label: 'Average', value: 'Average' },
+            { label: 'Sum', value: 'sum' },
+        ];
+    }
 
     @wire(getobjectlist)
     wiredResult(result)
@@ -125,12 +139,45 @@ export default class Rollupeasy extends LightningElement {
         this.showchild =true ;
         
     }
-    handlerowaction2(event)
-    {
-        const row=event.detail.row;
-        this.selectedchildobject=row.childObjectName;
-        console.log('selected child object ',JSON.parse(JSON.stringify(row)).childObjectName);
-    }    
+    handlerowaction2(event){
+    const row=event.detail.row;
+    var con;
+    this.selectedchildobject=row.childObjectName;
+    
+    
+    console.log('selected child ',JSON.parse(JSON.stringify(row)));
+    getfields({SelectedObj:this.selectedchildobject})
+        .then(result => {
+            con = result;
+            for(var k in con)
+            {
+    
+             this.childfields.push({ name:con[k].label, label:k, datatype:con[k].datatype, relationship:con[k].relationship  });
+            }
+           console.log('test1.1  ',this.childfields);
+        })
+        .catch(error => {
+            this.error = error;
+        });
+        this.showchild=false;
+        this.selectionpage=true;
+        console.log('child fields ',this.childfields);
+    }
+    handleChange2(event) {
+        this.childfield=true;
+        const selectedOption = event.detail.value;
+        
+      console.log('Option selected with value: ', selectedOption);
+    }
+    thelistSelection(event) {
+        this.selectedchildField=[];
+        this.newslect=false;
+        var selectedchildfield = event.target.value;
+      this.selectedchildField.push({key:selectedchildfield,value:selectedchildfield});
+        console.log(' selectedfields ',selectedchildfield);
+        console.log('key value',this.selectedchildField);
+        this.newslect=true;
+    }
 
 }
     

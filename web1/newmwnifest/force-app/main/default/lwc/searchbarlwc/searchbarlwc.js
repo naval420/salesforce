@@ -2,10 +2,18 @@ import { LightningElement,track } from 'lwc';
 import getAccountList from '@salesforce/apex/searchlwc.getAccountList';
 export default class Searchbarlwc extends LightningElement {
     searchValue='';
-     AccountRecord;
+     AccountRecord=[];
+     @track records=[];
      pilldata=[];
      showavtar=false;
      showtable=false;
+     showsearch =true;
+     columns = [
+        {label: 'Name', fieldName: 'name', type: 'text'},
+        {label: 'Account Id', fieldName: 'id', type: 'text'}, 
+        {label: 'Phone', fieldName: 'phone', type: 'text'},
+      
+   ];
     searchKeyword(event) {
         this.pilldata=[];
         this.searchValue = event.target.value;
@@ -19,7 +27,8 @@ export default class Searchbarlwc extends LightningElement {
                 .then(result => {
                     
                     con = result;
-                    this.AccountRecord= con;
+                    this.AccountRecord=[];
+                    
                     console.log('con',con);
                      for(var k in con)
                         {
@@ -27,7 +36,7 @@ export default class Searchbarlwc extends LightningElement {
                             
                         console.log('k.name',con[k].Name);
                         this.pilldata.push({type: 'avatar',label: con[k].Name,
-                        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg', 
+                        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg', 
                         fallbackIconName: 'standard:user',
                          variant: 'circle',
                          alternativeText: 'User avatar',});
@@ -35,14 +44,33 @@ export default class Searchbarlwc extends LightningElement {
                             
                          }
                          this.showavtar=true;
+                         this.AccountRecord = con;
                          console.log('pilldata', this.pilldata);
                 })
                 
-            // fire toast event if input field is blank
+            
             
         }
-        console.log('pilldata ',this.pilldata);
-        console.log('account record',this.AccountRecord);
+        //console.log('pilldata ',this.pilldata);
+        console.log('account record   ',this.AccountRecord);
+    }
+
+    handleClick(event) {
+        this.clickedButtonLabel = event.target.label;
+        var accountrecor;
+        var tabledata=[];
+        accountrecor = this.AccountRecord 
+        for(var val in accountrecor){
+            console.log(accountrecor[val].Name);
+            console.log(accountrecor[val].Id);
+            console.log(accountrecor[val].Phone);
+          tabledata.push({name: accountrecor[val].Name,id:accountrecor[val].Id,phone:accountrecor[val].Phone});
+
+        }
+        this.records.push(...tabledata);
+        this.showavtar =false;
+        this.showsearch=false;
+        this.showtable =true;
     }
     
 
