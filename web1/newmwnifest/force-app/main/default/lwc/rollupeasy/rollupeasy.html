@@ -59,7 +59,7 @@
                         </form>
                     </div>
                 </div>
-                <div if:true={newslect} class="slds-grid slds-grid--pull-padded">
+                <div if:true={newslect} class="slds-col--padded">
                 <div class="slds-text-title">Selected field</div>
                 <select id="theList2" size="8" >
                     <template for:each={selectedchildField} for:item="item" if:true={newslect}>
@@ -78,6 +78,9 @@
                 </div>
                 </div>
             </lightning-card>
+            <div class="slds-align_absolute-center">
+                <lightning-button variant="brand" label="SAVE" title="Primary action" onclick={handleClickSave} class="slds-m-left_x-small"></lightning-button>
+    </div>
             </template> 
         
 </template>

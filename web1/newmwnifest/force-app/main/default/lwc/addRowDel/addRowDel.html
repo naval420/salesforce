@@ -1,0 +1,23 @@
+<template>
+    <template if:true={show}>
+     
+            <lightning-datatable
+            data={data}
+            columns={columns}
+            hide-checkbox-column= "true"
+            key-field="name"
+            show-row-number-column="true"></lightning-datatable>
+         
+        </template>    
+        
+    <div class="slds-m-bottom_small">
+        <lightning-input type="Integer"
+           value={inputvalue}
+           label=" Add number of row"
+           required="true"
+           onchange={new2}
+           ></lightning-input>
+     </div>
+     <lightning-button variant="brand" label="Add" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+     <lightning-button variant="brand" label="Delete" title="Primary action" onclick={handleClick2} class="slds-m-left_x-small"></lightning-button>
+</template>

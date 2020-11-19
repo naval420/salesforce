@@ -2,6 +2,7 @@ import { LightningElement,track,wire} from 'lwc';
 import getobjectlist from '@salesforce/apex/GetObject.getobjectlist';
 import getfields from '@salesforce/apex/GetObject.getfields';
 import getchild from '@salesforce/apex/GetObject.getchild';
+import updatefield from '@salesforce/apex/GetObject.updatefield';
 export default class Rollupeasy extends LightningElement {
     @track objects=[];
     @track  fields=[];
@@ -11,6 +12,8 @@ export default class Rollupeasy extends LightningElement {
     selectedobject='';
     selectedfield='';
     selectedchildobject='';
+    childObjectfield='';
+    optionselected=''
     childfields=[];
     selectionpage=false;
     childfield=false;
@@ -44,11 +47,11 @@ export default class Rollupeasy extends LightningElement {
      get options() {
         
         return [
-            { label: 'count', value: 'count' },
-            { label: 'Maximum', value: 'Maximum' },
-            { label: 'Minimum', value: 'minimum' },
-            { label: 'Average', value: 'Average' },
-            { label: 'Sum', value: 'sum' },
+           
+            { label: 'Maximum', value: 'Max' },
+            { label: 'Minimum', value: 'Min' },
+            { label: 'Average', value: 'Avg' },
+            { label: 'Sum', value: 'Sum' },
         ];
     }
 
@@ -151,7 +154,7 @@ export default class Rollupeasy extends LightningElement {
             con = result;
             for(var k in con)
             {
-    
+             this.childObjectfield = k;
              this.childfields.push({ name:con[k].label, label:k, datatype:con[k].datatype, relationship:con[k].relationship  });
             }
            console.log('test1.1  ',this.childfields);
@@ -166,7 +169,7 @@ export default class Rollupeasy extends LightningElement {
     handleChange2(event) {
         this.childfield=true;
         const selectedOption = event.detail.value;
-        
+        this.optionselected = selectedOption;
       console.log('Option selected with value: ', selectedOption);
     }
     thelistSelection(event) {
@@ -177,6 +180,17 @@ export default class Rollupeasy extends LightningElement {
         console.log(' selectedfields ',selectedchildfield);
         console.log('key value',this.selectedchildField);
         this.newslect=true;
+    }
+    handleClickSave(){
+        updatefield({parentObjectName:this.selectedobject,
+            parentfieldname:this.selectedfield,
+        childObject:this.selectedchildobject,
+    childfield:this.childObjectfield,
+optionselected:this.optionselected})
+        .then(result => {
+                 console.log('i min save');
+                
+            });
     }
 
 }
